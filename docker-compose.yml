@@ -1,0 +1,29 @@
+version: '3.2'
+
+services:
+  mysql-db:
+    image: mysql:latest
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: RootPass1992
+      MYSQL_DATABASE: news_portal
+    networks:
+      - application
+
+  rest:
+    container_name: rest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    networks:
+      - application
+    depends_on:
+      - mysql-db
+    restart: on-failure
+
+
+networks:
+  application:
+    driver: bridge
